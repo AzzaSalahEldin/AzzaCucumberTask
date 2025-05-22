@@ -9,7 +9,7 @@ import java.time.Duration;
 public class Base {
 	public static WebDriver driver;
 
-	public void initializeDriver() {
+	public static void initializeDriver() {
 		if (driver == null) {
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver();
@@ -22,9 +22,10 @@ public class Base {
 		driver.get("https://opensource-demo.orangehrmlive.com/");
 	}
 
-	public void closeDriver() {
+	public static void closeDriver() {
 		if (driver != null) {
-			driver.quit();
-		}
+            driver.quit();
+            driver = null;
+        }
 	}
 }

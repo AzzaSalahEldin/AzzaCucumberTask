@@ -1,5 +1,5 @@
 
-  Feature: Test the login functionality
+  Feature: Test the OrangeHRM functionality
   @Sanity @Regression
   Scenario: Login with valid username and password
     Given User opens the website and navigates to the login page
@@ -16,7 +16,7 @@
     When User clicks on the Add button
     And User fills in the required data:
       | Employee Name | Username     | Password   | Confirm Password |
-      | Admin Admin123      | TestEmpUser  | P@ssw0rd  | P@ssw0rd        |
+      | Orange test      | TestEmpUser  | P@ssw0rd  | P@ssw0rd        |
     And User clicks the Save button
     Then The number of user records should increase by 1
 
