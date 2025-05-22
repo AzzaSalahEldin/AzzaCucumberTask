@@ -16,7 +16,7 @@
     When User clicks on the Add button
     And User fills in the required data:
       | Employee Name | Username     | Password   | Confirm Password |
-      | Orange test      | TestEmpUser  | P@ssw0rd  | P@ssw0rd        |
+      | Azza Salah ElDin      | TestEmpUser  | P@ssw0rd  | P@ssw0rd        |
     And User clicks the Save button
     Then The number of user records should increase by 1
 
