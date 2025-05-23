@@ -2,6 +2,9 @@ package steps;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.*;
+
+import java.util.Random;
+
 import org.junit.Assert;
 
 import base.Base;
@@ -9,16 +12,20 @@ import pages.*;
 
 public class Steps extends Base {
 
-    public static LoginPage loginPage;
-    public static DashboardPage dashboardPage;
-    public static AdminPage adminPage;
-    static int initialCount = 0;
-    static long currentTime = System.currentTimeMillis();
+	public static LoginPage loginPage;
+	public static DashboardPage dashboardPage;
+	public static EmployeePage employeePage;
+	public static AdminPage adminPage;
+	static int initialCount = 0;
+	Random random;
+	static long currentTime = System.currentTimeMillis();
 
 	public Steps() {
 		loginPage = new LoginPage(driver);
 		dashboardPage = new DashboardPage(driver);
+		employeePage = new EmployeePage(driver);
 		adminPage = new AdminPage(driver);
+		random = new Random();
 	}
 
 	@Given("User opens the website and navigates to the login page")
@@ -38,11 +45,28 @@ public class Steps extends Base {
 		dashboardPage.verifyDashboardIsVisible();
 	}
 
+	@When("User clicks on the PIM tab in the left menu")
+	public void user_clicks_on_the_pim_tab() {
+		dashboardPage.clickPIMTab();
+	}
+
+	@And("User add new Employee")
+	public void user_adds_new_employee() {
+		employeePage.clickAdd();
+		employeePage.enterEmployeeDetails("Azza" + currentTime, "Salah", "Mahmoud", 100000 + random.nextInt(900000));
+		employeePage.clickSave();
+	}
+
+	@Then("User check employee personal header")
+	public void user_checks_employee_personal_details_header() {
+		Assert.assertTrue(employeePage.verifyEmployeeAddedSuccessfully());
+	}
+
 	@When("User clicks on the Admin tab in the left menu")
 	public void user_clicks_on_the_admin_tab_in_the_left_menu() {
-		dashboardPage.clickAdminTab();
+		employeePage.clickAdminTab();
 	}
-	
+
 	@Then("User gets and stores the current number of user records")
 	public void user_gets_and_stores_user_count() {
 		System.out.println("Total Records is " + adminPage.getRecordsCount());
@@ -56,8 +80,8 @@ public class Steps extends Base {
 
 	@And("User fills in the required data:")
 	public void fill_required_data(DataTable dataTable) {
-		adminPage.enterEmployeeName(dataTable.cell(1, 0));
-		adminPage.enterUserName(dataTable.cell(1, 1)+ currentTime);
+		adminPage.enterEmployeeName("Azza" + currentTime + " Salah " + "Mahmoud");
+		adminPage.enterUserName(dataTable.cell(1, 1) + currentTime);
 		adminPage.enterPassword(dataTable.cell(1, 2));
 		adminPage.enterConfirmPassword(dataTable.cell(1, 3));
 		adminPage.selectUserRole("Admin");
@@ -82,7 +106,7 @@ public class Steps extends Base {
 
 	@Then("The user {string} should appear in the search results")
 	public void verify_user_appears(String username) {
-		Assert.assertTrue(adminPage.isUsernamePresent(username + currentTime));	
+		Assert.assertTrue(adminPage.isUsernamePresent(username + currentTime));
 	}
 
 	@When("User deletes the user {string}")

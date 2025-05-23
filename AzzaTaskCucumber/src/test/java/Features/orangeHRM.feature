@@ -7,6 +7,12 @@
     Then User should be navigated to the home page
 
   @Regression
+  Scenario: Navigate to PIM tab and add new employee
+    When User clicks on the PIM tab in the left menu
+    And User add new Employee
+    Then User check employee personal header
+    
+  @Regression
   Scenario: Navigate to Admin tab and get initial user record count
     When User clicks on the Admin tab in the left menu
     Then User gets and stores the current number of user records
